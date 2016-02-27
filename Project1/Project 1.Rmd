@@ -2,14 +2,14 @@
 title: "Project 1"
 author: "Dan Brooks"
 date: "February 20, 2016"
-output: html_document
+output: pdf_document
 ---
 # Import Information From Excel File
 ``` {r get_tournamnet_information}
 library(RCurl)
 library(stringr)
 library(plotly)
-URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Chess_Tournament_Info.csv")
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Project1/Chess_Tournament_Info.csv")
 Data <- read.csv(text = URL, header = FALSE)
 
 names(Data) <- c("Position", "Name", "Points", "RD1", "RD2", "RD3", "RD4", "RD5", "RD6", "RD7")
@@ -268,7 +268,7 @@ write.csv(Chessdata, file = "Project1.csv")
 ***
 #Create a plot 
 * This plot will show the comparison between the points a participant earned, their pre-rating, and their average opponentrating they faced
-``` {r plot_infromation, eval = TRUE}
+``` {r plot_infromation, eval = FALSE}
 plot_ly(data = Chessdata, x = Points, y = Pre_Rating, z = Average_Opp_Rate, mode = "markers")
 ```
 
