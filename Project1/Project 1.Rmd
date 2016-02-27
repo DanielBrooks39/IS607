@@ -1,0 +1,275 @@
+---
+title: "Project 1"
+author: "Dan Brooks"
+date: "February 20, 2016"
+output: html_document
+---
+# Import Information From Excel File
+``` {r get_tournamnet_information}
+library(RCurl)
+library(stringr)
+library(plotly)
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Chess_Tournament_Info.csv")
+Data <- read.csv(text = URL, header = FALSE)
+
+names(Data) <- c("Position", "Name", "Points", "RD1", "RD2", "RD3", "RD4", "RD5", "RD6", "RD7")
+```
+***
+# Extract Infromation (Position, State, Name, Pre-Rating, Round Information)
+* Position
+    + Extract the position of the competitor in the tournament (1-64)
+* State
+    + Extracts the state where the competitor is from
+* Name
+    + Gets the full name of the participant
+* Pre-Rating
+    + Gets the rating of the participant beofre the start of the tournament
+* Firstrd
+    + The result of the first round of the tournament
+    + This is repeated for all seven rounds
+* OverallRate
+    + The average rate of all of opponents that the participant faced
+    + Total of all the Pre-rating the paticipant faced divided by the total number of rounds played
+* Points
+    + The total number of points the participant received
+       + W - win (1 point)
+       + L - Lose (0 points)
+       + D - Draw (.5 points)
+       + H - half point bye (.5 points)
+       + X - Win by forfeit (opp. failed to appear, 1 point) 
+       + U - unplayed game (player withdrew, 0 point)
+       + B - full point bye (1 point)
+```{r data_extraction}
+position <- unlist(str_extract_all(Data$Position, "[[:digit:]]{1,2}"))
+position
+
+state <- unlist(str_extract_all(Data$Position, "[A-Z]{2}"))
+state
+
+name <- unlist(str_extract_all(Data$Name, "[A-Z].+[A-Z][A-Z]"))
+head(name)
+tail(name)
+
+prerating <- unlist(str_extract_all(Data$Name, "[[:space:]][[:digit:]]{3,4}"))
+prerating
+
+firstrd <- unlist(str_extract_all(Data$RD1, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+secondrd <- unlist(str_extract_all(Data$RD2, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+thirdrd <- unlist(str_extract_all(Data$RD3, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+fourthrd <- unlist(str_extract_all(Data$RD4, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+fifthrd <- unlist(str_extract_all(Data$RD5, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+sixthrd <- unlist(str_extract_all(Data$RD6, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+seventhrd <- unlist(str_extract_all(Data$RD7, "[W][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[D][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[L][[:space:]][[:space:]][[:digit:]][[:digit:]]*|[B][[:space:]]*|[U][[:space:]]*|[H][[:space:]]*|[X][[:space:]]*"))
+
+overallrate <- c(1:64)
+points <- (1:64)
+
+Chessdata <- cbind.data.frame(name, state, points, prerating, overallrate, firstrd, secondrd, thirdrd, fourthrd, fifthrd, sixthrd, seventhrd)
+names(Chessdata) <- c("Name", "State", "Points", "Pre_Rating", "Average_Opp_Rate", "RD1", "RD2", "RD3","RD4", "RD5", "RD6", "RD7")
+
+head(Chessdata)
+tail(Chessdata)
+```
+***
+#Function to Calculate the Total Points the Player Received
+* This functions will calculate the total number of points the participant received over all 7 rounds of the tournament
+* This functions takes in 8 variables
+    + points (the vector that will hold the total number of points for each participant)
+    + one (result for the first round the participant played)
+    + two (result for the second round the participant plated)
+    + etc ....
+* This function goes through and extracts the letter result for each round the participant played
+* It then assigns the number of points associated with the letter to each round
+* It will then add up the points for each round
+* It will move the total number of points to the overall data frame (Chessdata$Points)
+```{r point_calculation}
+pointcalc <- function(points, one, two, three, four, five, six, seven)
+{
+  index <- 1
+  while (index <= 64)
+{
+     total <- 0
+    if (str_extract(one[index], "[[:alpha:]]") == "W"|str_extract(one[index], "[[:alpha:]]") == "B"|str_extract(one[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }
+    if (str_extract(two[index], "[[:alpha:]]") == "W"|str_extract(two[index], "[[:alpha:]]") == "B"|str_extract(two[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }
+    if (str_extract(three[index], "[[:alpha:]]") == "W"|str_extract(three[index], "[[:alpha:]]") == "B"|str_extract(three[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }
+    if (str_extract(four[index], "[[:alpha:]]") == "W"|str_extract(four[index], "[[:alpha:]]") == "B"|str_extract(four[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }  
+    if (str_extract(five[index], "[[:alpha:]]") == "W"|str_extract(five[index], "[[:alpha:]]") == "B"|str_extract(five[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }  
+    if (str_extract(six[index], "[[:alpha:]]") == "W"|str_extract(six[index], "[[:alpha:]]") == "B"|str_extract(six[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }
+    if (str_extract(seven[index], "[[:alpha:]]") == "W"|str_extract(seven[index], "[[:alpha:]]") == "B"|str_extract(seven[index], "[[:alpha:]]") == "X")
+  {                                                   
+    total <- total + 1
+  }
+      if (str_extract(one[index], "[[:alpha:]]") == "D"|str_extract(one[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }
+    if (str_extract(two[index], "[[:alpha:]]") == "D"|str_extract(two[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }
+    if (str_extract(three[index], "[[:alpha:]]") == "D"|str_extract(three[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }
+    if (str_extract(four[index], "[[:alpha:]]") == "D"|str_extract(four[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }  
+    if (str_extract(five[index], "[[:alpha:]]") == "D"|str_extract(five[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }  
+    if (str_extract(six[index], "[[:alpha:]]") == "D"|str_extract(six[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }
+    if (str_extract(seven[index], "[[:alpha:]]") == "D"|str_extract(seven[index], "[[:alpha:]]") == "H")
+  {                                                   
+    total <- total + .5
+  }
+  points[index] <- total
+  index <-index + 1
+  }
+  return(points)
+}
+
+Chessdata$Points <- pointcalc(points, firstrd, secondrd, thirdrd, fourthrd, fifthrd, sixthrd, seventhrd)
+
+head(Chessdata)
+```
+***
+#Function to Calculate the Average Rating of Opponent
+* This function will calculate the overall average rating of the opponents the participant faced throughout the tournamnet
+* This function takes in 9 variables
+    + It will take in the 7 rounds of result data
+    + It will take in the Pre-Rating or each participant in the tournament
+    + A place holder for the Average Opponent rating for the entire tournamnet
+* It intialized the counts for each individual round. This will be used to total up the amount of opponents the participant actually faced. The count will increase by one only when the participant actually played faced somebody. It will not go up if there is a forefeit or bye. 
+* It will initialize total total number of ratings the participant faced durig thr tournament. This follows the same pattern as the counts. It will only increase if the participant actuall faces an opponent. It will not increase if there was a bye or forfeit.
+* It will read in the number of opponent. That number will be used to search the index of the player pre-rating vector. That index will take the rating of the opponent (if it exists) and add tot the total. It will also increase the count by one. It will do that for every round for that player. It will then add up the ratings for each round and divide it by the total number of players faced. That will give the overall player rating each participant faced.
+* It then places that calculated value into the overall dta frame (Chessdata$Average_Opp_Rate)
+  
+```{r average_opponent_rating}
+calcrating <- function (one, two, three, four, five, six, seven, prating, avgrating)
+{
+  index <- 1
+  while (index <= 64)
+  {
+    total1 <- 0
+    total2 <- 0
+    total3 <- 0
+    total4 <- 0
+    total5 <- 0
+    total6 <- 0
+    total7 <- 0
+    count1 <- 0
+    count2 <- 0
+    count3 <- 0
+    count4 <- 0
+    count5 <- 0
+    count6 <- 0
+    count7 <- 0
+    overalltotal <- 0
+    overallcount <- 0
+    opponentnum1 <- str_extract(one[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum1)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total1 <- total1 + value
+    count1 <- count1 + 1
+    }
+    opponentnum2 <- str_extract(two[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum2)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total2 <- total2 + value
+    count2 <- count2 + 1
+    }
+    opponentnum3 <- str_extract(three[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum3)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total3 <- total3 + value
+    count3 <- count3 + 1
+    }
+    opponentnum4 <- str_extract(four[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum4)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total4 <- total4 + value
+    count4 <- count4 + 1
+    }
+    opponentnum5 <- str_extract(five[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum5)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total5 <- total5 + value
+    count5 <- count5 + 1
+    }
+    opponentnum6 <- str_extract(six[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum6)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total6 <- total6 + value
+    count6 <- count6 + 1
+    }
+    opponentnum7 <- str_extract(seven[index], "[[:digit:]][[:digit:]]*")
+    num <- as.numeric(opponentnum7)
+    if (!is.na(num))
+    {
+    value <- as.numeric(prating[num])
+    total7 <- total7 + value
+    count7 <- count7 + 1
+    }
+    overalltotal <- total1 + total2 + total3 + total4 + total5 + total6 + total7
+    overallcount <- count1 + count2 + count3 + count4 + count5 + count6 + count7
+  if (overallcount == 0)
+  {
+    overallcount <- 1
+  }
+   avgrating[index] <- overalltotal/overallcount
+   index <-index + 1
+  }
+  return(avgrating)
+}
+
+Chessdata$Average_Opp_Rate <- calcrating(firstrd, secondrd, thirdrd, fourthrd, fifthrd, sixthrd, seventhrd, prerating, overallrate)
+head(Chessdata)
+```
+***
+#Write to a CSV File
+```{r Write_CSV}
+write.csv(Chessdata, file = "Project1.csv")
+```
+***
+#Create a plot 
+* This plot will show the comparison between the points a participant earned, their pre-rating, and their average opponentrating they faced
+``` {r plot_infromation, eval = TRUE}
+plot_ly(data = Chessdata, x = Points, y = Pre_Rating, z = Average_Opp_Rate, mode = "markers")
+```
+
+
