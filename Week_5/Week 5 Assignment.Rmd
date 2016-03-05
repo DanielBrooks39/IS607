@@ -1,0 +1,63 @@
+---
+title: "Week 5 Assignment"
+author: "Dan Brooks"
+date: "February 28, 2016"
+output: html_document
+---
+#Extract the CSV file from my Github Page and get all of the libraries that are needed for this assignment.
+```{r}
+library(RCurl)
+library(dplyr)
+library(tidyr)
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Week_5/Flight_Information.csv")
+FlightData <- read.csv(text = URL, header = TRUE)
+```
+***
+#Gives names to the vectors that are in the data frame and add information to the table where there is a blank spot.
+#Create a Tidy dataset with the columns Airline, Info, Destinations and the total flights that were delayed or ontime for waech airline and destination
+```{r}
+names(FlightData) <- c("Airline", "Info", "Los Angeles","Phoenix", "San Diego", "San Francisco", "Seattle")
+FlightData$Airline[2] <- "Alaska"
+FlightData$Airline[4] <- "AM West"
+Tidy <- FlightData %>% gather("Destination", "Timing", 3:7)
+```
+***
+#Separate the full tidy dataset into delayed and ontime flights 
+```{r}
+Delay <- Tidy %>% filter(Info == "Delay")
+OnTime <- Tidy %>% filter(Info == "OnTime"|Info == "Ontime")
+```
+***
+#Find the mean number of lfights per airline that is ontime and delayed
+```{r}
+AvgDelay <- Delay %>% group_by(Airline) %>% summarise(mean = mean(Timing))
+AvgDelay
+AvgOntime <- OnTime %>%  group_by(Airline) %>% summarise(mean = mean(Timing))
+AvgOntime
+```
+***
+#Join the delayed and ontime datasets together and figure out the ration between the number of ontime flights to the number of delayed flights per airline
+```{r}
+Joined <- inner_join(AvgDelay, AvgOntime, by = "Airline")
+names(Joined) <- c("Airline", "AvgDelay", "AvgOnTime") 
+FlightInfo <- Joined %>% mutate("Ratio(OnTime/Delay)" = AvgOnTime/AvgDelay)
+FlightInfo
+```
+***
+#Find the mean number of flights that were ontime or delayed according to their destination
+```{r}
+AvgDelay <- Delay %>% group_by(Destination) %>%  summarise(mean = mean(Timing))
+AvgDelay
+AvgOntime <- OnTime %>%  group_by(Destination) %>% summarise(mean = mean(Timing))
+AvgOntime
+```
+***
+#Find the ratio between the avg number of flights that were ontime and the average number of flights that were delayed based on their destination
+```{r}
+Joined <- inner_join(AvgDelay, AvgOntime, by = "Destination")
+names(Joined) <- c("Destination", "AvgDelay", "AvgOnTime")
+DestInfo <- Joined %>% mutate("Ratio" = AvgOnTime/AvgDelay) %>% arrange(desc(Ratio))
+DestInfo
+```
+
+#If I had to pick an airline to fly on, I would pick AM West, because their ratio of ontime flights to delayed flights is higher thatn Alaska. Also, I would pick Phoenix as my destination because their ratio is also the best compared to the other destinations.
