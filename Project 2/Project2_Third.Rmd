@@ -1,0 +1,50 @@
+---
+title: "Basketball Data"
+author: "Dan Brooks"
+date: "March 7, 2016"
+output: html_document
+---
+```{r Get_Information}
+library(RCurl)
+library(tidyr)
+library(dplyr)
+library(useful)
+
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Project%202/NBA%20wins.csv")
+WinData <- read.csv(text = URL, header = TRUE)
+```
+
+```{r Tidy_Data}
+tbl_df(WinData)
+TidyData <- gather(WinData,"Team", "Wins",4:33)
+names(TidyData) <- c("Num", "Season", "League","Team", "Wins")
+
+TidyData <- TidyData %>% separate(Season, c("Start", "End"), sep = "-")
+TidyData <- select(TidyData, Start, Team, Wins)
+```
+
+# Box Plot broken apart by each team
+
+```{r Box_Plot}
+ggplot(TidyData, aes(x=Team, y=Wins, fill = Team)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=.5, face="bold", size = 10)) + ggtitle("Wins By Each Team (1989-2014)") + theme(plot.title=element_text(face="bold", size = 20)) + theme(axis.title.x = element_text(face="bold", size = 15), axis.title.y = element_text(face="bold", size= 15)) + scale_y_continuous(breaks=c(10, 20, 30, 40, 50, 60, 70))
+```
+* This is a Box Plot that will show you the break down of each team (1989-2014). It will show you the average number fo wins over the time span, the quartiles over the time span, and the most and least number of wins over the time span.We can see by the graph that SAS (the Spurs) have the most averages wins over all of the other teams over the time span. They have a very close together box plot, meaning their wins do not vary from year to year. It shows that they are a pretty consist team.
+
+***
+
+# Bar Graph of most wins in a season (1989-2014) by Team
+
+```{r Bar_Graph_Wins}
+ggplot(TidyData,aes(x=Team, y=Wins, fill = Team)) + geom_bar(stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face="bold", size=10), axis.title=element_text(face="bold", size = 15)) + ggtitle("Max Wins By Team") + theme(plot.title = element_text(face="bold", size=20)) + theme(legend.title=element_text(face="bold", size=15, color="white"), legend.background=element_rect(fill="black"), legend.text=element_text(face="bold", color="white", size=10)) + scale_y_continuous(breaks=c(10, 20, 30, 40, 50, 60, 70))
+```
+* This is a bar graph that show the highest number of wins a team. WE can see that the Chicago Bulls(CHI) have the most wins over the time span. The currently hold the recod for the best record in NBA history with 72, we can see that there is really no team that has come close to the number. (Golden State is on track for beating that record this basketball season
+
+*** 
+
+# Bar Graph of most loses in a season (1989-2014) by Team
+
+```{r Bar_Graph_Loss}
+TidyData <- TidyData %>% mutate(Loses = 82-Wins)
+ggplot(TidyData,aes(x=Team, y=Loses, fill = Team)) + geom_bar(stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face="bold", size=10), axis.title=element_text(face="bold", size = 15)) + ggtitle("Max Loses By Team") + theme(plot.title = element_text(face="bold", size=20)) + theme(legend.title=element_text(face="bold", size=15, color="white"), legend.background=element_rect(fill="black"), legend.text=element_text(face="bold", color="white", size=10)) + scale_y_continuous(breaks=c(10, 20, 30, 40, 50, 60, 70))
+```
+* This is a bar graph that shows the most loses by team in a given season over the time span. We can see that Charlotte(Bobcats/Hornets)  has the most loses out of any team. The look to have lost around 75 games! That means the only won 7 games all season. Memphis and LA Clippers are pretty close as well.

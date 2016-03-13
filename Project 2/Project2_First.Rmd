@@ -1,0 +1,32 @@
+---
+title: "DeathRate Data"
+author: "Dan Brooks"
+date: "March 7, 2016"
+output: html_document
+---
+```{r Get_Information}
+library(RCurl)
+library(dplyr)
+library(tidyr)
+library(useful)
+
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Project%202/Death%20Rate%20Data.csv")
+DeathData <- read.csv(text = URL, header = TRUE)
+```
+
+```{r Tidy_Data}
+tbl_df(DeathData)
+names(DeathData) <- c("Year", "Ages", "Both_Sexes", "Females", "Males")
+TidyData <- gather(DeathData, "Sex","DeathRate", 3:5)
+```
+
+# Bar Plot of Death Rates by Sex
+
+```{r Bar_Plot}
+TidyData$Ages <- factor(TidyData$Ages, levels = c("<1 year", "1-4 years", "5-9 years", "10-14 years", "15-19 years", "20-24 years", "25-29 years", "30-34 years", "35-39 years", "40-44 years", "45-49 years", "50-54 years", "55-59 years", "60-64 years", "65-69 years", "70-74 years", "75-79 years", "80-84 years", "85-89 years", "90-94 years", "95-99 years", "100+ years"))
+
+ggplot(TidyData, aes(x=Sex, y=DeathRate, fill = Ages)) + geom_bar(stat = "identity", position="dodge") + theme(axis.title.x=element_text(face="bold", size=15), axis.title.y=element_text(face="bold", size=15), axis.text=element_text(face="bold", size = 10)) + ggtitle("Death Rate") + theme(plot.title=element_text(face="bold", size=20)) + theme(legend.title=element_text(face="bold", size=10,color="white"), legend.background=element_rect(fill="black"), legend.text=element_text(face="bold", color="white", size=8))
+```
+* This is a bar plot that is separated by sex(Males, Females, Both). We can see by the graph that teh death rate increases the older you get (As it should be). It is a little scary that infants below the age of 1 do have a little high of a death rate. The graph is a really good depiction of how the rate changes as you get older. 
+
+

@@ -1,0 +1,35 @@
+---
+title: "App Download Data"
+author: "Dan Brooks"
+date: "March 7, 2016"
+output: html_document
+---
+```{r Get_Information}
+library(RCurl)
+library(dplyr)
+library(tidyr)
+library(useful)
+
+URL <- getURL("https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Project%202/App%20Download%20Data.csv")
+AppData <- read.csv(text = URL, header = TRUE)
+```
+
+```{r Tidy_Data}
+tbl_df(AppData)
+names(AppData) <- c("Store", "Name", "Type", "Paid/Free", "Release Date", "2010", "2011", "2012", "2013", "2014", "2015")
+TidyData <- gather(AppData, "Year", "Downloads", 6:11)
+```
+
+# Bar Graph for total number of Dwnloads by Store
+
+``` {r Bar_Plot}
+ggplot(TidyData, aes(x=Store, y=Downloads, fill = Name)) + geom_bar(stat = "identity", position ="dodge") + theme(axis.text.x=element_text(face="bold", size=10), axis.text.y=element_text(face="bold", size=10)) + theme(axis.title.x=element_text(face="bold", size=20) , axis.title.y=element_text(face="bold", size=20)) + ggtitle("Total Number App Downloads by Store") + theme(plot.title=element_text(face="bold", size=15)) + theme(legend.title=element_text(face="bold", size=15,color="white"), legend.background=element_rect(fill="black"), legend.text=element_text(face="bold", color="white", size=10))
+```
+* This is a bar graph that shows the total times each app was downloaded broken aprat by the APple and Google store. We can see that the top download was Angry Birds (Shocker) for both stores, but it was downloaded more by the google store. The app that came ine second was words with friends
+
+***
+
+```{r Facet_Plot}
+ggplot(TidyData, aes(x=Store, y=Downloads, fill = Name)) + geom_bar(stat ="identity", position ="dodge") + facet_grid(Year~.) + theme(panel.background = element_rect(fill = "black"), panel.grid.minor = element_line(color = "black")) + theme(strip.text.y=element_text(color="white", face="bold", size=15), strip.background=element_rect(fill="black")) + theme(axis.text.y=element_text(angle=30, face="bold", size=12), axis.text.x=element_text(face="bold", size=12), axis.title=element_text(face="bold", size=15)) + ggtitle("#App Downloads by Store (2010-2015)") + theme(plot.title=element_text(face="bold", size=15)) + theme(legend.title=element_text(face="bold", size=10,color="white"), legend.background=element_rect(fill="black"), legend.text=element_text(face="bold", color="white", size=8))
+```
+* This is a Facet graph. It compares the number of downloads to the store that it was downloaded in, and it breaks apart the downloads by the years. It shows that back in 2010, Words With Friends was the big game to download, but as we get closer to 2015, ANgry Birds becomes the top download and Wrds With Friends drops sown to one of the lowest downloads.
