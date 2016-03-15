@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textbooks>
-  <book id = "1">
+  <book>
+    <id>1</id>
     <title>Differential Equations with Boundary Value Problems</title>
     <author_one>John Porking</author_one> 
     <author_two>Al Boggess</author_two>
@@ -13,7 +14,8 @@
     <new_price>&#36;158.40</new_price>
     <website><![CDATA[Textbooks.com]]></website>
   </book>
-  <book id = "2">
+  <book>
+    <id>2</id>
     <title>Fourier Series</title>
     <author_one>Rajendra Bhatia</author_one>
     <ISBN>0883857405</ISBN>
@@ -24,7 +26,8 @@
     <new_price>&#36;35.00</new_price>
     <website><![CDATA[Amazon.com]]></website>
   </book>
-  <book id = "3">
+  <book>
+    <id>3</id>
     <title>Linear Algebra</title>
     <author_one>Stephen H. Freidberg</author_one> 
     <author_two>Arnold J. Insel</author_two>
