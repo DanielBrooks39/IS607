@@ -25,7 +25,7 @@
     <website><![CDATA[Amazon.com]]></website>
   </book>
   <book id = "3">
-    <title>"Linear Algebra"</title>
+    <title>Linear Algebra</title>
     <author_one>Stephen H. Freidberg</author_one> 
     <author_two>Arnold J. Insel</author_two>
     <author_three>Lawrence E. Spence</author_three>  
