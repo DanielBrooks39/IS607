@@ -1,0 +1,43 @@
+---
+title: "Week 8"
+author: "Dan Brooks"
+date: "March 15, 2016"
+output: pdf_document
+---
+```{r}
+library(XML)
+library(RCurl)
+library(httr)
+library(RJSONIO)
+library(plyr)
+library(stringr)
+```
+
+```{r XML_Extract}
+url <- "https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Week%208/books.xml"
+doc.xml <- xmlParse(rawToChar(GET(url)$content))
+doc.xml
+root <- xmlRoot(doc.xml)
+xml.df <- xmlToDataFrame(root)
+names(xml.df) <- c("Ranks", "Title", "Author One", "Author Two", "Author Three", "ISBN", "Publisher", "Year", "Book Type", "Used Price", "New Price", "Website")
+xml.df
+```
+
+```{r JSON_Extract}
+url <- "https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Week%208/books.json"
+doc.json <- fromJSON(url)
+doc.json
+unlist.doc <- sapply(doc.json[[1]], unlist)
+json.df <- do.call("rbind.fill", lapply(lapply(unlist.doc,t),data.frame, stringAsFactors = FALSE))
+names(json.df) <- c("Rank", "Title", "Author One", "Author Two", "Author Three", "ISBN", "Publisher", "Year", "Book Type", "Used Price", "New Price", "Website")
+json.df
+```
+
+```{r HTML Extract}
+url <- "https://raw.githubusercontent.com/DanielBrooks39/IS607/master/Week%208/books.html"
+doc.html <-htmlParse(rawToChar(GET(url)$content))
+doc.html
+html.df <- as.data.frame(readHTMLTable(doc.html))
+names(html.df) <- c("Rank", "Title", "Author One", "Author Two", "Author Three", "ISBN", "Publisher", "Year", "Book Type", "Used Price", "New Price", "Website")
+html.df
+```
