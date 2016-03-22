@@ -1,0 +1,27 @@
+,skilltype,skill,SkillMapping,rating
+1,programming,Python,Object-Oriented Programming,28
+2,math,analytics,Classical Statistics,23
+3,programming,machine learning,Machine Learning,19
+4,business,business,Industry-Specific Knowledge,14
+5,programming,programming,General Programming,14
+6,communication,team,Product Development,14
+7,math,statistics,Classical Statistics,13
+8,programming,SQL,Structured Data,12
+9,communication,communication,Communication,11
+10,programming,modeling,Surveys and Marketing,9
+11,communication,interpersonal,Communication,9
+12,communication,management,Business,9
+13,programming,big data,Big and Distributed Data,7
+14,visualization,design,Product Development,6
+15,programming,Hadoop,Big and Distributed Data,6
+16,programming,Java,Back-End Programming,6
+17,business,research,Industry-Specific Knowledge,4
+18,communication,creative,Creative Thinking,4
+19,math,math,Math,3
+20,programming,MATLAB,Mathematical Programming,3
+21,programming,predictive analytics,Machine Learning,3
+22,programming,SAS,Statistical Programming,3
+23,communication,leadership,Communication,3
+24,business,analysis,Classical Statistics,2
+25,visualization,presentation,Communication,1
+26,programming,R,Statistical Programming,1

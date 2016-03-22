@@ -2,7 +2,7 @@
 title: "Week 8"
 author: "Dan Brooks"
 date: "March 15, 2016"
-output: pdf_document
+output: html_document
 ---
 ```{r}
 library(XML)

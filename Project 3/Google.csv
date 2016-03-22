@@ -1,0 +1,40 @@
+,skilltype,skill,SkillMapping,rating
+1,communication,ai  law,NA,7
+2,business,analysis,Classical Statistics,10
+3,math,analytics,Classical Statistics,11
+4,programming,big data,Big and Distributed Data,42
+5,programming,cloud,Systems Administration,2
+6,business,creativity,Creative Thinking,3
+7,programming,data engineering,Big and Distributed Data,4
+8,programming,data mining,Big and Distributed Data,3
+9,programming,data natives,Big and Distributed Data,8
+10,programming,devops,Product Development,2
+11,business,entrepreneurship,Communication,2
+12,programming,fintech,Big and Distributed Data,2
+13,programming,galaxql,Structured Data,2
+14,business,government,Industry-Specific Knowledge,3
+15,programming,Hadoop,Big and Distributed Data,12
+16,business,information,Information Security,9
+17,programming,IOS,Mobile Devices,2
+18,programming,Java,Back-End Programming,2
+19,programming,machine learning,Machine Learning,15
+20,business,manufacturing,Industry-Specific Knowledge,2
+21,programming,MATLAB,Mathematical Programming,2
+22,visualization,media,Systems Administration,6
+23,programming,mobile development,Mobile Devices,2
+24,NA,NA,#N/A,56
+25,programming,network,Graphical Models,2
+26,programming,NOSQL,Unstructured Data,5
+27,math,pattern discovery,Unstructured Data,2
+28,business,policy,Industry-Specific Knowledge,3
+29,programming,Python,Object-Oriented Programming,7
+30,programming,r,Statistical Programming,7
+31,business,retail,Industry-Specific Knowledge,2
+32,programming,RSS,Structured Data,2
+33,programming,Ruby,Back-End Programming,2
+34,programming,SAS,Statistical Programming,2
+35,business,security and risk strategy,Information Security,2
+36,programming,SQL,Structured Data,6
+37,programming,storage,Systems Administration,2
+38,programming,tableau,Visualization,2
+39,programming,web development,Front-End Programming,2

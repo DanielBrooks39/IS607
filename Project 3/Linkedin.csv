@@ -1,0 +1,21 @@
+,skill_type_name,skill_name,SkillMapping,rating
+1,business,analysis,Classical Statistics,55.69
+2,math,analytics,Classical Statistics,35.16
+3,math,statistics,Classical Statistics,41.52
+4,programming,modeling,Surveys and Marketing,27.15
+5,math,algorithm design,Algorithms,27.04
+6,programming,R,Statistical Programming,48.01
+7,programming,SAS,Statistical Programming,22.78
+8,programming,MATLAB,Mathematical Programming,30.55
+9,programming,data mining,Big and Distributed Data,45.94
+10,programming,machine learning,Machine Learning,45.32
+11,programming,Python,Object-Oriented Programming,46.31
+12,programming,SQL,Structured Data,39
+13,programming,Java,Back-End Programming,30.02
+14,programming,C++,Object-Oriented Programming,25.99
+15,programming,Hadoop,Big and Distributed Data,20.98
+16,business,business intelligence,Visualization,23.78
+17,programming,big data,Big and Distributed Data,23.68
+18,programming,programming,General Programming,19.77
+19,business,research,Industry-Specific Knowledge,19.7
+20,programming,sofware engineering,General Programming,19.51

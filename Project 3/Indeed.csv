@@ -1,0 +1,81 @@
+,skilltype,skill,SkillMapping,rating
+1,programming,agent-based Simulation,Simulation,32
+2,programming,ANOVA,Classical Statistics,138
+3,math,Bayes networks,Bayesian/Monte-Carlo Statistics,74
+4,math,Bayesian Statistics,Bayesian/Monte-Carlo Statistics,175
+5,programming,big data,Big and Distributed Data,44
+6,programming,BUGS,Bayesian/Monte-Carlo Statistics,160
+7,programming,C,Object-Oriented Programming,80
+8,math,calculus,Math,91
+9,programming,cloud tech,Systems Administration,106
+10,programming,clustering,Machine Learning,165
+11,math,continuous Simulation,Simulation,149
+12,math,convex Optimization,Optimization,17
+13,programming,CSS,Front-End Programming,93
+14,programming,DBA,Systems Administration,143
+15,business,decision trees,Machine Learning,117
+16,visualization,design,Product Development,15
+17,programming,discrete Simulation,Simulation,94
+18,programming,Distributed Data,Big and Distributed Data,94
+19,visualization,experimental design,Science,152
+20,business,forecasting,Temporal Statistics,49
+21,math,general linear model,Classical Statistics,133
+22,math,geographic covariates,Spatial Statistics,0
+23,programming,GIS,Spatial Statistics,233
+24,business,global Optimization,Optimization,94
+25,visualization,Graphical Models,Graphical Models,122
+26,programming,Hadoop,Big and Distributed Data,76
+27,programming,Hive,Big and Distributed Data,106
+28,programming,HTML,Front-End Programming,73
+29,math,integer Optimization,Optimization,96
+30,programming,JAVA,Back-End Programming,70
+31,programming,JavaScript,Front-End Programming,83
+32,programming,JSON,Structured Data,146
+33,math,linear algebra,Math,69
+34,programming,Machine Learning,Machine Learning,98
+35,visualization,Map/Reduce,Big and Distributed Data,109
+36,visualization,mapping,Big and Distributed Data,134
+37,math,Math,Math,76
+38,programming,MATLAB,Mathematical Programming,108
+39,math,MCMC,Bayesian/Monte-Carlo Statistics,68
+40,math,Monte-Carlo Statistics,Bayesian/Monte-Carlo Statistics,170
+41,math,multinomial modeling,Surveys and Marketing,16
+42,programming,MySQL,Relational Database,114
+43,programming,neural nets,Graphical Models,64
+44,programming,nix,Systems Administration,6
+45,programming,NoSQL,Unstructured Data,89
+46,programming,Objective C,Object-Oriented Programming,129
+47,programming,Oracle,Relational Database,121
+48,programming,Perl,Back-End Programming,96
+49,programming,Pig,Big and Distributed Data,155
+50,programming,PostgreSQL,Relational Database,124
+51,business,Product Development,Product Development,41
+52,business,project management,Product Development,25
+53,programming,Python,Object-Oriented Programming,52
+54,programming,R,Statistical Programming,64
+55,programming,Rails,Back-End Programming,132
+56,business,real analysis,Math,70
+57,programming,RegEx,Data Manipulation,86
+58,programming,Ruby,Back-End Programming,102
+59,programming,SAS ,#N/A,52
+60,programming,Simulation,Simulation,136
+61,communication,social networks,Graphical Models,172
+62,math,Spatial Statistics,Spatial Statistics,109
+63,programming,SPSS,Statistical Programming,122
+64,programming,SQL,Structured Data,44
+65,programming,Stata,Statistical Programming,107
+66,visualization,statistical graphics,Visualization,183
+67,math,Statistics,Classical Statistics,85
+68,programming,Structured Data,Structured Data,75
+69,business,Surveys and Marketing,Surveys and Marketing,130
+70,programming,SVM,Machine Learning,144
+71,business,Systems Administration,Systems Administration,109
+72,communication,technical writing/publishing,Science,4
+73,programming,Teradata,Relational Database,127
+74,programming,text mining,Unstructured Data,174
+75,math,time-series analysis,Temporal Statistics,167
+76,programming,UNIX ,#N/A,89
+77,programming,Unstructured Data,Unstructured Data,92
+78,visualization,visualization,Visualization,80
+79,visualization,web-based data-viz,Visualization,0
+80,programming,XML,Structured Data,185
